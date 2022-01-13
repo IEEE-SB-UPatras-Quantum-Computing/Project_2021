@@ -25,14 +25,15 @@ class Teleportation_Protocol(Protocol):
         
     def create_circuit(self):
         print("io")
-        alice =  QuantumRegister(2,"a")
-        self.a0 = alice[0]
-        self.a1 = alice[1]
-        bob =  QuantumRegister(1,"b")
-        self.b0 = bob[0]
-        c = ClassicalRegister(3,"c")
-        self.qc = QuantumCircuit(alice,bob, c)
+        self.alice =  QuantumRegister(2,"a")
+        self.a0 = self.alice[0]
+        self.a1 = self.alice[1]
+        self.bob =  QuantumRegister(1,"b")
+        self.b0 = self.bob[0]
+        self.c = ClassicalRegister(3,"c")
+        self.qc = QuantumCircuit(self.alice,self.bob, self.c)
         self.s=0
+        
         self.alice_init()
         self.initialize()
         self.initialize_exp()
@@ -45,8 +46,20 @@ class Teleportation_Protocol(Protocol):
         
     def initialize(self):
         self.simulator()
+
+        self.initial_state=self.job.result().get_statevector(self.qc)
+        
+        self.alice_measure()
         self.read_statevector()
+
+        self.quantum_state=self.job.result().get_statevector(self.qc)
+
         self.classical_register()
+        self.bob_measure()
+
+        self.read_statevector()
+        self.final_state = self.job.result().get_statevector(self.
+                                                             qc)
        # self.circuit_draw()
 
     def initialize_exp(self):
@@ -55,6 +68,15 @@ class Teleportation_Protocol(Protocol):
         self.calculate()
         self.classical_out()
         self.new_quantum_state()
+        
+    def alice_measure(self):
+        self.qc.cx(self.a0, self.a1)
+        self.qc.h(self.a0)
+        self.qc.measure(self.alice[0:2], self.c[0:2])
+
+    def bob_measure(self):
+        self.qc.cx(self.a1, self.b0)
+        self.qc.cz(self.a0, self.b0)
         
     def read_statevector(self):
         self.s = 0
