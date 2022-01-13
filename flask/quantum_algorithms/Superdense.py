@@ -3,7 +3,7 @@
 #from qiskit.circuit import Gate
 from .Algorithms import Protocol
 
-class SuperdenseCode:
+class SuperdenseCode(Protocol):
     # Alice = Sender q[1]
     # Bob = Reciever q[0]
     def __init__(self):
