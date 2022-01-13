@@ -8,11 +8,58 @@ from qiskit import QuantumCircuit, execute, assemble, Aer
 from qiskit.visualization import plot_bloch_multivector, plot_histogram, plot_state_qsphere
 
 
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute, Aer
+from qiskit.circuit import Gate
+from math import pi, cos, sin, sqrt
+from random import randrange
+# Necessary Imports for the notebook
+from qiskit import QuantumCircuit, execute, assemble, Aer
+from qiskit.visualization import plot_bloch_multivector, plot_histogram, plot_state_qsphere
 
+class Protocol:
+    def __init__(self, save_folder, q_num):
+        #self.q_num = q_num
+        self.qc = QuantumCircuit(q_num)
+        self.folder = save_folder
+        self.create_circuit()
+        #self.save()
+    
+    def create_circuit(self):
+        # To be implemented in each protocol
+        print("myron")
+        pass
+    
+    def save(self):
+        self.save_circuit()
+        self.save_qshpere()
+        self.save_qubits()
+        self.save_histogram()
+
+    def save_circuit(self):
+        self.qc.draw('mpl', filename = self.folder+"circ.jpg")
+    
+    def save_qshpere(self):
+        result = execute(self.qc, Aer.get_backend("statevector_simulator"), shots=1).result()
+        plot_state_qsphere(result.get_statevector()).savefig(self.folder+"qsphere.jpg")
+
+    def save_qubits(self):
+        result = execute(self.qc, Aer.get_backend("statevector_simulator"), shots=1).result()
+        plot_bloch_multivector(result.get_statevector()).savefig(self.folder+"qubits.jpg")
+    
+    def save_histogram(self):
+        sim = Aer.get_backend('statevector_simulator')
+        qobj = assemble(self.qc)  # Assemble circuit into a Qobj that can be run
+        counts = sim.run(qobj).result().get_counts()  # Do the simulation, returning the state vector
+        plot_histogram(counts).savefig(self.folder+"hist.jpg")  # Save the output on measurement of state vector
+        
 class Teleportation_Protocol(Protocol):
     def __init__(self):
         q_num = 3
-        print("Teleportation started")
+        super().__init__("folder1", q_num)
+        
+        
+    def create_circuit(self):
+        print("io")
         alice =  QuantumRegister(2,"a")
         self.a0 = alice[0]
         self.a1 = alice[1]
@@ -21,18 +68,16 @@ class Teleportation_Protocol(Protocol):
         c = ClassicalRegister(3,"c")
         self.qc = QuantumCircuit(alice,bob, c)
         self.s=0
-        super().__init__("folder1", q_num)
+        self.alice_init()
         self.initialize()
         self.initialize_exp()
-        
-        
-    def create_circuit(self):
-        print("io")
+
+    def alice_init(self):
         theta = 2*pi* randrange(100)/100 # random angle in radians
         self.qc.ry(2*theta, self.a0) # random state for Alice
         self.qc.h(self.a1)
         self.qc.cx(self.a1, self.b0)
-
+        
     def initialize(self):
         self.simulator()
         self.read_statevector()
@@ -43,7 +88,7 @@ class Teleportation_Protocol(Protocol):
         self.exp_circuit()
         self.exp_initialize()
         self.calculate()
-        self.classical_outcome()
+        self.classical_out()
         self.new_quantum_state()
         
     def read_statevector(self):
@@ -91,7 +136,7 @@ class Teleportation_Protocol(Protocol):
 
         #self.circuit_draw()
         
-    def classical_outcome(self):
+    def classical_out(self):
         job = execute(self.qc,Aer.get_backend('statevector_simulator'),optimization_level=0,shots=1)
         self.current_quantum_state=job.result().get_statevector(self.qc)
         for i in range(len(self.current_quantum_state)):
@@ -106,19 +151,18 @@ class Teleportation_Protocol(Protocol):
                 self.classical_outcome = classical_outcomes[i]
                 self.balvis_state = [ self.current_quantum_state[2*i].real,self.current_quantum_state[2*i+1].real ]
         print()
+        self.all_states = ['000','001','010','011','100','101','110','111']
+        self.balvis_state_str = "|"+self.classical_outcome+">("
 
     def new_quantum_state(self):
-        all_states = ['000','001','010','011','100','101','110','111']
-        balvis_state_str = "|"+self.classical_outcome+">("
         for i in range(len(self.current_quantum_state)):
             if abs(self.current_quantum_state[i].real-self.a)<0.000001: 
-                balvis_state_str += "+a|"+ all_states[i][2]+">"
+                self.balvis_state_str += "+a|"+ self.all_states[i][2]+">"
             elif abs(self.current_quantum_state[i].real+self.a)<0.000001:
-                balvis_state_str += "-a|"+ all_states[i][2]+">"
+                self.balvis_state_str += "-a|"+ self.all_states[i][2]+">"
             elif abs(self.current_quantum_state[i].real-self.b)<0.000001: 
-                balvis_state_str += "+b|"+ all_states[i][2]+">"
+                self.balvis_state_str += "+b|"+ self.all_states[i][2]+">"
             elif abs(self.current_quantum_state[i].real+self.b)<0.000001: 
-                balvis_state_str += "-b|"+ all_states[i][2]+">"
-        balvis_state_str += ")"        
-        print("the new quantum state is",balvis_state_str)
-
+                self.balvis_state_str += "-b|"+ self.all_states[i][2]+">"
+        self.balvis_state_str += ")"        
+        print("the new quantum state is",self.balvis_state_str)
