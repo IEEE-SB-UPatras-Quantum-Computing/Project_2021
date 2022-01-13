@@ -1,4 +1,13 @@
 from .Algorithm import Protocol
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute, Aer
+from qiskit.circuit import Gate
+from math import pi, cos, sin, sqrt
+from random import randrange
+# Necessary Imports for the notebook
+from qiskit import QuantumCircuit, execute, assemble, Aer
+from qiskit.visualization import plot_bloch_multivector, plot_histogram, plot_state_qsphere
+
+
 
 class Teleportation_Protocol(Protocol):
     def __init__(self):
