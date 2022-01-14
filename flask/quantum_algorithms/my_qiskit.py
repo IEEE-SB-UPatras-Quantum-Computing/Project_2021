@@ -1,10 +1,13 @@
+from .Cryptography import Cryptography_Protocol
+from .Superdense import Superdense_Protocol
+from .Teleportation import Teleportation_Protocol
 
-def circuit(algorithm, save_folder, q_num):
-    if algorithm == "cryptography": from .Cryptography import Cryptography_Protocol as algorithm_class
-    elif algorithm == "superdense": from .Superdense import Superdense_Protocol as algorithm_class
-    elif algorithm == "teleportation": from .Teleportation import Teleportation_Protocol as algorithm_class
-    
-    algorithm_class(save_folder+algorithm+"/", q_num)
-
-
-
+def choose_algorithm(algorithm, save_folder, q_num):
+    if not algorithm:
+        return
+    elif algorithm == "cryptography":
+        Cryptography_Protocol(save_folder+algorithm+"/", q_num)
+    elif algorithm == "superdense":
+        Superdense_Protocol(save_folder+algorithm+"/", q_num)
+    elif algorithm == "teleportation":
+        Teleportation_Protocol(save_folder+algorithm+"/", q_num)
