@@ -1,30 +1,11 @@
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute, Aer
+from math import pi, cos, sin
+from random import randrange
 from .Algorithm import Protocol
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute, Aer
-from qiskit.circuit import Gate
-from math import pi, cos, sin, sqrt
-from random import randrange
-# Necessary Imports for the notebook
-from qiskit import QuantumCircuit, execute, assemble, Aer
-from qiskit.visualization import plot_bloch_multivector, plot_histogram, plot_state_qsphere
 
-
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute, Aer
-from qiskit.circuit import Gate
-from math import pi, cos, sin, sqrt
-from random import randrange
-# Necessary Imports for the notebook
-from qiskit import QuantumCircuit, execute, assemble, Aer
-from qiskit.visualization import plot_bloch_multivector, plot_histogram, plot_state_qsphere
-
-        
 class Teleportation_Protocol(Protocol):
-    def __init__(self):
-        q_num = 3
-        super().__init__("folder1", q_num)
-        
-        
+    
     def create_circuit(self):
-        print("io")
         self.alice =  QuantumRegister(2,"a")
         self.a0 = self.alice[0]
         self.a1 = self.alice[1]
@@ -32,8 +13,7 @@ class Teleportation_Protocol(Protocol):
         self.b0 = self.bob[0]
         self.c = ClassicalRegister(3,"c")
         self.qc = QuantumCircuit(self.alice,self.bob, self.c)
-        self.s=0
-        
+
         self.alice_init()
         self.initialize()
         self.initialize_exp()
@@ -43,32 +23,25 @@ class Teleportation_Protocol(Protocol):
         self.qc.ry(2*theta, self.a0) # random state for Alice
         self.qc.h(self.a1)
         self.qc.cx(self.a1, self.b0)
-        
+    
+
+    ##-------------------------------- INITIALIZE
     def initialize(self):
         self.simulator()
+        # self.initial_state = self.job.result().get_statevector(self.qc)
 
-        self.initial_state=self.job.result().get_statevector(self.qc)
-        
         self.alice_measure()
-        self.read_statevector()
+        # self.read_statevector()
+        # self.quantum_state = self.job.result().get_statevector(self.qc)
 
-        self.quantum_state=self.job.result().get_statevector(self.qc)
-
-        self.classical_register()
+        # self.classical_register()
         self.bob_measure()
-
-        self.read_statevector()
-        self.final_state = self.job.result().get_statevector(self.
-                                                             qc)
-       # self.circuit_draw()
-
-    def initialize_exp(self):
-        self.exp_circuit()
-        self.exp_initialize()
-        self.calculate()
-        self.classical_out()
-        self.new_quantum_state()
-        
+        # self.read_statevector()
+        # self.final_state = self.job.result().get_statevector(self.qc)
+    
+    def simulator(self, sim='statevector_simulator', shots=1):
+        self.job = execute(self.qc, Aer.get_backend(sim), shots=shots)
+    
     def alice_measure(self):
         self.qc.cx(self.a0, self.a1)
         self.qc.h(self.a0)
@@ -77,42 +50,29 @@ class Teleportation_Protocol(Protocol):
     def bob_measure(self):
         self.qc.cx(self.a1, self.b0)
         self.qc.cz(self.a0, self.b0)
-        
-    def read_statevector(self):
-        self.s = 0
-        self.simulator()                                        # One for initial state          # One after Alice's measurement
-        state=self.job.result().get_statevector(self.qc)
+    
 
-    def classical_register(self):
-        self.s = 1
-        self.simulator()
-        alice_bits = list(self.job.result().get_counts(self.qc))[0][1:3]                  # measurement of Alice's qubits
-        print("Bits measured by Alice:", alice_bits, self.job.result().get_counts(self.qc))
-        print(alice_bits)
-        
-    def simulator(self, sim = 'statevector_simulator',shots=1 ):
-        if (self.s) == 1:
-            sim = 'qasm_simulator'
-        simulator = Aer.get_backend(sim)
-        self.job = execute(self.qc, simulator,shots = shots)
-
-    def circuit_draw(self):
-        display(self.qc.draw(output='mpl'))
-        
+    ##-------------------------------- INITIALIZE_EXP
+    def initialize_exp(self):
+        self.exp_circuit()
+        self.exp_initialize()
+        self.calculate()
+        # self.classical_out()
+        # self.new_quantum_state()
+    
     def exp_circuit(self):
         self.q =  QuantumRegister(3,"q") 
         self.c = ClassicalRegister(3,"c") 
         self.qc = QuantumCircuit(self.q,self.c)
         
     def exp_initialize(self):
-        r = randrange(100)
-        theta = 2*pi*(r/100) # radians
-        print("the picked angle is",r*3.6,"degrees and",theta,"radians")
+        theta = 2*pi* randrange(100)/100 # radians
         self.a = cos(theta)
         self.b = sin(theta)
-        print("a=",round(self.a,3),"b=",round(self.b,3))
-        print("a*a=",round(self.a**2,3),"b*b=",round(self.b**2,3))
         self.qc.ry(2*theta,self.q[2])
+        # print("the picked angle is", theta* 360/2/pi,"degrees and",theta,"radians")
+        # print("a=",round(self.a,3),"b=",round(self.b,3))
+        # print("a*a=",round(self.a**2,3),"b*b=",round(self.b**2,3))
         
     def calculate(self):
         self.qc.h(self.q[1])
@@ -120,9 +80,19 @@ class Teleportation_Protocol(Protocol):
         self.qc.cx(self.q[2],self.q[1])
         self.qc.h(self.q[2])
         self.qc.measure(self.q[1:3], self.c[1:3])
+    
+    ############################################################ NOT USED ############################################################
+    
+    def read_statevector(self):
+        self.simulator()
+        state = self.job.result().get_statevector(self.qc)
 
-        #self.circuit_draw()
-        
+    def classical_register(self):
+        self.simulator(sim='qasm_simulator')
+        alice_bits = list(self.job.result().get_counts(self.qc))[0][1:3]                  # measurement of Alice's qubits
+        # print("Bits measured by Alice:", alice_bits, self.job.result().get_counts(self.qc))
+        # print(alice_bits)
+
     def classical_out(self):
         job = execute(self.qc,Aer.get_backend('statevector_simulator'),optimization_level=0,shots=1)
         self.current_quantum_state=job.result().get_statevector(self.qc)
