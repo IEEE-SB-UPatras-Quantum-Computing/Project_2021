@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request, session
-from quantum_algorithms.my_qiskit import choose_algorithm
+from quantum_algorithms.main_qiskit import choose_algorithm
 # from quantum_algorithms.Cryptography import Cryptography_Protocol
 # from quantum_algorithms.Superdense import Superdense_Protocol
 # from quantum_algorithms.Teleportation import Teleportation_Protocol
