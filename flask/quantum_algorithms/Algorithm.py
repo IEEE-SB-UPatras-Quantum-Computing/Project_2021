@@ -1,14 +1,17 @@
-# Necessary Imports for the notebook
+from msilib.schema import Error
 from qiskit import QuantumCircuit, execute, assemble, Aer
 from qiskit.visualization import plot_bloch_multivector, plot_histogram, plot_state_qsphere
 
 class Protocol:
-    def __init__(self, save_folder, q_num):
-        self.q_num = q_num
-        self.qc = QuantumCircuit(q_num)
+    def __init__(self, save_folder):
         self.folder = save_folder
+        self.initialize_circuit()
         self.create_circuit()
         self.save()
+    
+    def initialize_circuit(self):
+        # implement and declare the QuantumCircuit self.qc
+        self.qc = QuantumCircuit(1) # Default circuit
     
     def create_circuit(self):
         # To be implemented in each protocol
@@ -16,24 +19,24 @@ class Protocol:
     
     def save(self):
         self.save_circuit()
+        self.sim = Aer.get_backend("statevector_simulator")
+        self.statevector = execute(self.qc, self.sim, shots=1).result().get_statevector()
         self.save_qshpere()
         self.save_qubits()
-        self.save_histogram()
+        try: self.save_histogram()
+        except Exception: return
 
     def save_circuit(self):
-        self.qc.draw('mpl', filename = self.folder+"circ.jpg")
+        self.qc.draw('mpl', filename= self.folder+"circ.jpg")
     
     def save_qshpere(self):
-        result = execute(self.qc, Aer.get_backend("statevector_simulator"), shots=1).result()
-        plot_state_qsphere(result.get_statevector()).savefig(self.folder+"qsphere.jpg")
-
+        plot_state_qsphere(self.statevector).savefig(self.folder+"qsphere.jpg")
+    
     def save_qubits(self):
-        result = execute(self.qc, Aer.get_backend("statevector_simulator"), shots=1).result()
-        plot_bloch_multivector(result.get_statevector()).savefig(self.folder+"qubits.jpg")
+        plot_bloch_multivector(self.statevector).savefig(self.folder+"qubits.jpg")
     
     def save_histogram(self):
-        sim = Aer.get_backend('statevector_simulator')
-        qobj = assemble(self.qc)  # Assemble circuit into a Qobj that can be run
-        counts = sim.run(qobj).result().get_counts()  # Do the simulation, returning the state vector
-
-        plot_histogram(counts).savefig(self.folder+"hist.jpg")  # Save the output on measurement of state vector
+        #self.qc.measure_all()
+        self.sim = Aer.get_backend("qasm_simulator")
+        counts = execute(self.qc, self.sim).result().get_counts()  # Do the simulation, returning the statevector
+        plot_histogram(counts, title="Measurement").savefig(self.folder+"hist.jpg")  # Save the output on measurement of statevector
