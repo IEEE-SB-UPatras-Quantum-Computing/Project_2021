@@ -1,0 +1,82 @@
+.home {
+    background: url(../../public/QC-logo.png) left / contain no-repeat;
+}
+
+.menu-bar {
+    display: grid;
+    row-gap: 3rem;
+    padding: 3rem;
+    background-color: #0009;
+}
+
+.menu-bar a {
+    display: grid;
+    place-content: center;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: auto;
+    width: 25ch;
+    max-width: 50%;
+    height: 5rem;
+    border-radius: 2rem;
+    background-image: linear-gradient(225deg, var(--logo-color-3), var(--logo-color-1) 50%, var(--logo-color-0));
+    background-image: linear-gradient(225deg, #00629B 0% ,#981D97 50%,#772583 100%);
+    transition: 0.3s ease;
+}
+
+.menu-bar a:hover {
+    background-image: linear-gradient(270deg, #00629B 0% ,#981D97 20% 50%,#772583 100%);
+    transform: translate(0, 5px);
+    box-shadow: 5px -5px 20px 0 var(--logo-color-3), 5px -5px 20px 0 var(--dark);
+    box-shadow: 5px -5px 20px rgba(143,64,248,0.5), 5px -5px 20px rgba(0, 82, 158, 0.5);
+}
+
+
+
+
+
+/*
+
+.menu-bar {
+    border-radius: 25px;
+    height: fit-content;
+    display: inline-flex;
+    background-color: var(--logo-color-1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    align-items: center;
+    padding: 0 10px;
+    margin: 50px 0 0 0;
+}
+.menu-bar li {
+    list-style: none;
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 12px 16px;
+    margin: 0 8px;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.menu-bar li::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left:0;
+    height:100%;
+    width: 100%;
+    z-index:-2;
+    transition: .2s;
+    border-radius: 25px;
+}
+.menu-bar li:hover {
+    color: black;
+}
+.menu-bar li:hover::before {
+    background: linear-gradient(to bottom, #e8edec, #d2d1d3);
+    box-shadow: 0px 3px 20px 0px black;
+    transform: scale(1.2);
+}
+*/

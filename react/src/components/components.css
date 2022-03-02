@@ -1,0 +1,19 @@
+
+:root {
+    --logo-color: purple;
+    --logo-color-0: #772583;
+    --logo-color-1: #981d97;
+    --logo-color-2: #9d31a6;
+    --logo-color-3: #b83db7;
+    --dark: #212;
+}
+
+body {
+    cursor: default;
+    user-select: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
