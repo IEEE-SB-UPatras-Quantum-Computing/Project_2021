@@ -1,4 +1,3 @@
-import './components.css';
 import QuantumAlg from './quantum-algorithm';
 
 const properties = ["qubits", "gates", "other"];
