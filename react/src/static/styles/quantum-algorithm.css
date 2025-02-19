@@ -1,0 +1,93 @@
+
+.algorithm {
+    font-weight: bold;
+}
+
+.algorithm-body {
+    /* display: grid;
+    grid-template-columns: 20vw auto; */
+    display: flex;
+    margin-top: 1rem;
+    font-weight: normal;
+}
+
+
+.algorithm-body > main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: .5rem;
+    background-color: var(--dark);
+
+    padding: .5rem 0;
+    margin-left: 20vw;
+
+    background-image: url(/public/QC-logo.png);
+    background-size: calc(50% - 10vw);
+    background-position: 20vw;
+    background-repeat: repeat;
+
+    background-image: url(/public/bg-image-2.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position-x: 10vw; /* half of margin-left, because background's width contains the margin */
+    background-size: cover;
+}
+
+.algorithm-body > main > img {
+    border-radius: 2rem;
+    filter: drop-shadow(5px 5px 5px grey);
+    opacity: .9;
+    transition: .5s;
+}
+.algorithm-body > main > img:hover {
+    opacity: 1;
+    filter: drop-shadow(5px 5px 5px var(--dark));
+}
+.algorithm-body > main > img:active {
+    width: 80%;
+}
+
+
+.algorithm-body > aside {
+    background-color: var(--dark);
+    color: white;
+    width: calc(20vw - 1rem);
+    padding: .5rem;
+    height: 100%;
+    overflow-x: hidden;
+    resize: horizontal;
+
+    position: fixed;
+    top: 10vh;
+    left: 0;
+    z-index: 1;
+}
+
+.algorithm-body > aside > .info {
+    max-height: 20vh;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.properties {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    overflow-x: auto;
+}
+
+.property {
+    display: flex;
+    justify-content: start;
+    column-gap: .5rem;
+}
+
+.property > label {
+    min-width: fit-content;
+    overflow: hidden;
+}
+.property > label, .property > input {
+    max-width: 10vw;
+}
+

@@ -1,6 +1,5 @@
 import React from 'react';
-import './components.css';
-import './quantum-algorithm.css';
+import '../static/styles/quantum-algorithm.css';
 
 interface QuantumAlgProps {
     name: string;

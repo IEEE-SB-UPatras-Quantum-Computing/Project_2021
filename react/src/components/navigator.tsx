@@ -1,6 +1,5 @@
 import React from 'react';
-import './components.css';
-import './navigator.css';
+import '../static/styles/navigator.css';
 
 function NavBar(props: any) {
     function active(algorithm="") {
