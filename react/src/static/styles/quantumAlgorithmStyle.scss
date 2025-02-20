@@ -1,0 +1,91 @@
+
+.algorithm {
+    font-weight: bold;
+}
+
+.algorithm-body {
+    // display: grid;
+    // grid-template-columns: 20vw auto;
+    display: flex;
+    margin-top: 1rem;
+    font-weight: normal;
+    color: white;
+
+    aside {
+        background-color: var(--dark);
+        width: calc(20vw - 1rem);
+        padding: .5rem;
+        height: 100%;
+        overflow-x: hidden;
+        resize: horizontal;
+
+        position: fixed;
+        top: 10vh;
+        left: 0;
+        z-index: 1;
+        .info {
+            max-height: 20vh;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .properties {
+            display: flex;
+            flex-direction: column;
+            row-gap: 1rem;
+            overflow-x: auto;
+
+            .property {
+                display: flex;
+                justify-content: start;
+                column-gap: .5rem;
+
+                label {
+                    min-width: fit-content;
+                    overflow: hidden;
+                }
+                label, input {
+                    max-width: 10vw;
+                }
+            }
+        }
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: .5rem;
+        background-color: var(--dark);
+
+        padding: .5rem 0;
+        margin-left: 20vw;
+
+        background-image: url(../QC-logo.png);
+        background-size: calc(50% - 10vw);
+        background-position: 20vw;
+        background-repeat: repeat;
+
+        background-image: url(../bg-image.png);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position-x: 10vw; /* half of margin-left, because background's width contains the margin */
+        background-size: cover;
+
+        img {
+            border-radius: 2rem;
+            filter: drop-shadow(5px 5px 5px grey);
+            opacity: .9;
+            transition: .5s;
+        }
+        img:hover {
+            opacity: 1;
+            filter: drop-shadow(5px 5px 5px var(--dark));
+        }
+        img:active {
+            width: 60%;
+        }
+    }
+}
+
+
+
