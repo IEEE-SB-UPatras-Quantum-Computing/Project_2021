@@ -6,7 +6,7 @@ const properties = ["qubits", "gates", "other"];
 export default function SuperdensePage() {
   return (
     <div className='container'>
-      <QuantumAlg name="Superdense" algorithm="superdense" properties={properties} />
+      <QuantumAlg algorithm="superdense" properties={properties} />
     </div>
   );
 };

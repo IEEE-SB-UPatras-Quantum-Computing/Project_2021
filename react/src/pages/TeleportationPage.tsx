@@ -6,7 +6,7 @@ const properties = ["qubits", "gates", "other"];
 export default function TeleportationPage() {
   return (
     <div className='container'>
-      <QuantumAlg name="Teleportation" algorithm="teleportation" properties={properties} />
+      <QuantumAlg algorithm="teleportation" properties={properties} />
     </div>
   );
 };

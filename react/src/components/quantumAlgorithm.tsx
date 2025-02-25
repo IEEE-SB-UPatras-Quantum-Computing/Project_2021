@@ -1,34 +1,29 @@
 import React from 'react';
 import '../static/styles/quantumAlgorithmStyle.scss';
-
-const host = 'http://localhost:5000';
+import {ApiRoutes} from "../api/apiRoutes.ts";
 
 interface QuantumAlgProps {
-    name: string;
     algorithm: string;
     properties: string[];
 }
 
 function QuantumAlg(props: QuantumAlgProps) {
-    //fetch("${host}?q_num=2");
-    //const xhr = new XMLHttpRequest()
-    //xhr.open("GET", "${host}?q_num=2")
     return (
         <section className='algorithm'>
             <div className="title">
-                THIS IS THE QUANTUM ALGORITHM: <br />QUANTUM {props.name}!
+                THIS IS THE QUANTUM ALGORITHM: <br />QUANTUM {props.algorithm.toUpperCase()}!
             </div>
             <section className="algorithm-body">
                 <aside className="helper">
-                    <a href={`${host}?algorithm=${props.algorithm}&q_num=2`}>2 QUBITS</a> <br />
-                    <a href={`${host}?algorithm=${props.algorithm}&q_num=3`}>3 QUBITS</a> <br />
-                    <a href={`${host}?algorithm=${props.algorithm}&q_num=4`}>4 QUBITS</a> <br />
+                    <a href={`${ApiRoutes.API}${props.algorithm}?q_num=2`}>2 QUBITS</a> <br />
+                    <a href={`${ApiRoutes.API}${props.algorithm}?q_num=3`}>3 QUBITS</a> <br />
+                    <a href={`${ApiRoutes.API}${props.algorithm}?q_num=4`}>4 QUBITS</a> <br />
                     <div className="info">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus aliquam ipsam debitis facere, ex commodi assumenda. Libero fuga dicta fugiat modi blanditiis natus qui, voluptas id earum porro est doloremque aut eum. Molestias illo distinctio error laudantium vero porro provident recusandae, eligendi nisi, quo saepe laborum! Atque in voluptas officia!
                         </p>
                     </div>
-                    <form className="properties" method="get"> {/*action={`${host}`}*/}
+                    <form className="properties" method="get" action={ApiRoutes.API}>
                         {props.properties.map( (prop: any) => {
                             return (
                                 <div className="property">
@@ -42,7 +37,23 @@ function QuantumAlg(props: QuantumAlgProps) {
                 </aside>
                 <main>
                     {['circ.jpg', 'qsphere.jpg', 'qubits.jpg', 'hist.jpg'].map( filename => {
-                        return (<img src={"static/"+props.algorithm+"/"+filename} alt='circuit' width="50%" draggable="false" />);
+                        // var img = new Image();
+                        // img.onerror = () => {
+                        //    img = new Image();
+                        //    img.onerror = function(){
+                        //        console.log('not found at all !');
+                        //    };
+                        //    img.src = "static/"+props.algorithm+"/"+filename;
+                        // };
+                        // img.src = "http://localhost/static/"+props.algorithm+"/"+filename;
+                        try {
+                            console.log("TRY MEE ;)");
+                            return (<img src={`${ApiRoutes.API}static/${props.algorithm}/${filename}`} alt='circuit' width="50%" draggable="false" />);
+                        }
+                        catch {
+                            console.log("CAAATCH!");
+                            return (<img src={"static/"+props.algorithm+"/"+filename} alt='circuit' width="50%" draggable="false" />);
+                        }
                     })}
                     <div>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.

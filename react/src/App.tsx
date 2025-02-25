@@ -17,7 +17,7 @@ function App() {
         <Route path={AppRoutes.ROOT} element= {<><NavBar algorithm="" /><HomePage /></>} />
         <Route path={AppRoutes.SUPERDENSE} element= {<><NavBar algorithm="superdense" /><SuperdensePage /></>} />
         <Route path={AppRoutes.TELEPORTATION} element= {<><NavBar algorithm="teleportation" /><TeleportationPage /></>} />
-        <Route path={AppRoutes.QKD} element= {<><NavBar algorithm="cryptography" /><QKDPage /></>} />
+        <Route path={AppRoutes.QKD} element= {<><NavBar algorithm="key-distribution" /><QKDPage /></>} />
       </Routes>
       </BrowserRouter>
     </div>

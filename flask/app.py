@@ -1,26 +1,35 @@
 from flask import Flask, redirect, render_template, request, session
-from quantum_algorithms.main_qiskit import choose_algorithm
-# from quantum_algorithms.Cryptography import Cryptography_Protocol
-# from quantum_algorithms.Superdense import Superdense_Protocol
-# from quantum_algorithms.Teleportation import Teleportation_Protocol
+from constants import ApiConstants
+from quantum_algorithms.QKD import QKD_Protocol
+from quantum_algorithms.Superdense import Superdense_Protocol
+from quantum_algorithms.Teleportation import Teleportation_Protocol
+import matplotlib
+matplotlib.use('agg')
 
-IMAGES_FOLDER = "../react/public/static/"
-
-# Initialize images
-for q_alg in ['cryptography', 'superdense', 'teleportation']:
-    choose_algorithm( q_alg, IMAGES_FOLDER )
+IMAGES_FOLDER = "./static"
 
 
-##------------------------------------------------- FLASK APP
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def index():
-    print(request.args)
-    choose_algorithm( request.args.get('algorithm'), IMAGES_FOLDER )#, int(request.args.get('q_num')) )
-    return redirect("")
+    # choose_algorithm( request.args.get('algorithm'), IMAGES_FOLDER, request.args.get('q_num'))
+    return "Welcome to the Backend's API :)"
+
+@app.route(ApiConstants.SUPERDENSE, methods=["GET"])
+def superdense():
+    Superdense_Protocol(IMAGES_FOLDER + ApiConstants.SUPERDENSE)
+    return "Successfully ran Superdense!"
+
+@app.route(ApiConstants.QKD, methods=["GET"])
+def qkd():
+    QKD_Protocol(IMAGES_FOLDER + ApiConstants.QKD)
+    return "Successfully ran Quantum Key Distribution!"
+
+@app.route(ApiConstants.TELEPORTATION, methods=["GET"])
+def teleportation():
+    Teleportation_Protocol(IMAGES_FOLDER + ApiConstants.TELEPORTATION)
+    return "Successfully ran Teleport!"
 
 
-if __name__ == '__main__':
-    app.run(host='localhost', port=80)
-    #ON CMD: flask run --host=localhost --port=80
+app.run(host='localhost', port=80)
