@@ -82,7 +82,8 @@
             filter: drop-shadow(5px 5px 5px var(--dark));
         }
         img:active {
-            width: 60%;
+            scale: 1.5;
+            z-index: 1;
         }
     }
 }

@@ -13,7 +13,6 @@ function NavBar(props: any) {
                 <a className={active("superdense")} href={AppRoutes.SUPERDENSE} > Superdense </a>
                 <a className={active("teleportation")} href={AppRoutes.TELEPORTATION} > Teleportation </a>
                 <a className={active("key-distribution")} href={AppRoutes.QKD} > Quantum Key Distribution </a>
-                <div className="dot" />
             </div>
         </nav>
     );

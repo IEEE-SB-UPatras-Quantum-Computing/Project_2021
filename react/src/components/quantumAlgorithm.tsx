@@ -10,9 +10,7 @@ interface QuantumAlgProps {
 function QuantumAlg(props: QuantumAlgProps) {
     return (
         <section className='algorithm'>
-            <div className="title">
-                THIS IS THE QUANTUM ALGORITHM: <br />QUANTUM {props.algorithm.toUpperCase()}!
-            </div>
+            <div className="title"> QUANTUM {props.algorithm.toUpperCase()}! </div>
             <section className="algorithm-body">
                 <aside className="helper">
                     <a href={`${ApiRoutes.API}${props.algorithm}?q_num=2`}>2 QUBITS</a> <br />
@@ -37,23 +35,12 @@ function QuantumAlg(props: QuantumAlgProps) {
                 </aside>
                 <main>
                     {['circ.jpg', 'qsphere.jpg', 'qubits.jpg', 'hist.jpg'].map( filename => {
-                        // var img = new Image();
-                        // img.onerror = () => {
-                        //    img = new Image();
-                        //    img.onerror = function(){
-                        //        console.log('not found at all !');
-                        //    };
-                        //    img.src = "static/"+props.algorithm+"/"+filename;
-                        // };
-                        // img.src = "http://localhost/static/"+props.algorithm+"/"+filename;
-                        try {
-                            console.log("TRY MEE ;)");
-                            return (<img src={`${ApiRoutes.API}static/${props.algorithm}/${filename}`} alt='circuit' width="50%" draggable="false" />);
-                        }
-                        catch {
-                            console.log("CAAATCH!");
-                            return (<img src={"static/"+props.algorithm+"/"+filename} alt='circuit' width="50%" draggable="false" />);
-                        }
+                        return <img src={`${ApiRoutes.API}static/${props.algorithm}/${filename}`} 
+                                onError={({currentTarget}) => {
+                                    currentTarget.onerror = null; // prevents looping
+                                    currentTarget.src=`static/${props.algorithm}/${filename}`;
+                                }}
+                                alt='circuit' height="300" draggable="false" />;
                     })}
                     <div>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
